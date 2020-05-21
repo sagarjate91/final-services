@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Product {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private int productId;
     @ColumnTransformer(read = "AES_DECRYPT(file_name,'mySecretKey')",write ="AES_ENCRYPT(?,'mySecretKey')")

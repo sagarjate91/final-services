@@ -8,7 +8,7 @@ public class Cart{
 
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(name = "grand_total")
 	private double grandTotal;
