@@ -1,0 +1,46 @@
+package com.secure.search.customer.controller;
+
+import com.secure.search.customer.common.UserModel;
+import com.secure.search.customer.model.Customer;
+import com.secure.search.customer.repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import javax.servlet.http.HttpSession;
+
+@ControllerAdvice
+public class GlobalController {
+
+	@Autowired
+	private CustomerRepository userDAO;
+	
+	@Autowired
+	private HttpSession session;
+	
+	private UserModel userModel = null;
+	private Customer user = null;
+	
+	@ModelAttribute("userModel")
+	public UserModel getUserModel() {		
+
+	   if(session.getAttribute("email")!=null) {
+
+				   // get the user from the database
+				   user = userDAO.findByEmail(session.getAttribute("email").toString());
+
+				   if (user != null) {
+					   // create a new model
+					   userModel = new UserModel();
+					   // set the name and the id
+					   userModel.setId(user.getId());
+					   userModel.setFirstName(user.getFirstName() + " " + user.getLastName());
+
+					   session.setAttribute("userModel", userModel);
+					   return userModel;
+				   }
+		}
+		return (UserModel) session.getAttribute("userModel");
+	}
+		
+}
