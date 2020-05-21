@@ -16,7 +16,7 @@ public class Cart{
 	private int cartLines;
 
 	// linking the cart with a user
-	@OneToOne(mappedBy ="cart",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne
 	private Customer Customer;
 
 	public Cart(){

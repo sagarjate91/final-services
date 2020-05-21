@@ -5,6 +5,7 @@ import com.secure.search.customer.model.Cart;
 import com.secure.search.customer.model.Customer;
 import com.secure.search.customer.model.Product;
 import com.secure.search.customer.model.Role;
+import com.secure.search.customer.repository.CartRepository;
 import com.secure.search.customer.repository.CategoryRepository;
 import com.secure.search.customer.repository.CustomerRepository;
 import com.secure.search.customer.repository.ProductRepository;
@@ -38,6 +39,9 @@ public class CustomerController {
     CategoryRepository categoryRepository;
 
     @Autowired
+    CartRepository cartRepository;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/signup-add")
@@ -46,10 +50,12 @@ public class CustomerController {
             redirectAttributes.addFlashAttribute("message","User Already added,Please try new one..!");
         }else{
             customer.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
-            customer.setStatus(0);
             Role role=new Role();
             role.setRole("USER");
             customer.setRoles(Collections.singleton(role));
+            Cart cart = new Cart();
+            cart.setCustomer(customer);
+            customer.setCart(cart);
             repo.save(customer);
             redirectAttributes.addFlashAttribute("message","User added successfully....!!!");
         }
@@ -76,9 +82,6 @@ public class CustomerController {
         addUserInSession(session,customer.getEmail(),ConstantService.USER_ROLE);
         // set the name and the id
         userModel.setId(customer.getId());
-        Cart cart = new Cart();
-        cart.setCustomer(customer);
-        customer.setCart(cart);
         session.setAttribute("userModel", userModel);
         model.addAttribute("userClickUserHome",true);
         return "redirect:/customer/user-home.htm";

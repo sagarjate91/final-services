@@ -18,9 +18,9 @@ public class Customer implements Serializable {
     private String mobileNumber;
     private String address;
     private String pinCode;
-    private int status;
+    private int status=0;
 
-    @OneToOne
+    @OneToOne(mappedBy ="Customer" ,cascade=CascadeType.ALL,fetch = FetchType.EAGER)
     private Cart cart;
 
     @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
@@ -29,18 +29,6 @@ public class Customer implements Serializable {
 
     public Customer(){
 
-    }
-    public Customer(int id, String firstName, String lastName, String email, String password, String mobileNumber, String address, String pinCode, int status, Set<Role> roles) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.mobileNumber = mobileNumber;
-        this.address = address;
-        this.pinCode = pinCode;
-        this.status = status;
-        this.roles = roles;
     }
 
     public Cart getCart() {
