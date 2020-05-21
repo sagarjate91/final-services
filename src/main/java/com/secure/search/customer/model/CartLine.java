@@ -34,6 +34,7 @@ public class CartLine implements Serializable {
 	public void setBuyingPrice(double buyingPrice) {
 		this.buyingPrice = buyingPrice;
 	}
+
 	@Column(name = "is_available")
 	private boolean available = true;
 	
@@ -74,6 +75,6 @@ public class CartLine implements Serializable {
 	public void setAvailable(boolean available) {
 		this.available = available;
 	}
-		
-	
+
+
 }

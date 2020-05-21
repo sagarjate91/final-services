@@ -35,7 +35,7 @@ public class GlobalController {
 					   // set the name and the id
 					   userModel.setId(user.getId());
 					   userModel.setFirstName(user.getFirstName() + " " + user.getLastName());
-
+					   userModel.setCart(user.getCart());
 					   session.setAttribute("userModel", userModel);
 					   return userModel;
 				   }

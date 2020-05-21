@@ -1,19 +1,14 @@
 package com.secure.search.customer.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 
 @Entity
-public class Cart implements Serializable {
+public class Cart{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@GeneratedValue
 	private int id;
 	@Column(name = "grand_total")
 	private double grandTotal;
@@ -21,7 +16,7 @@ public class Cart implements Serializable {
 	private int cartLines;
 
 	// linking the cart with a user
-	@OneToOne
+	@OneToOne(mappedBy ="cart",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Customer Customer;
 
 	public Cart(){

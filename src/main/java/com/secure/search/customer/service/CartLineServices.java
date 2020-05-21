@@ -40,9 +40,8 @@ public class CartLineServices {
     }
 
     public List<CartLine> getCartLines() {
-
-        return cardLineRepository.findAll();
-
+        Cart cart = this.getCart();
+        return cardLineRepository.list(cart.getId());
     }
 
     public String addCartLine(int productId) {
@@ -113,7 +112,6 @@ public class CartLineServices {
 
     public String validateCartLine() {
 
-
         Cart cart = this.getCart();
         List<CartLine> cartLines = cardLineRepository.list(cart.getId());
         double grandTotal = 0.0;
@@ -124,6 +122,7 @@ public class CartLineServices {
         for(CartLine cartLine : cartLines) {
             product = cartLine.getProduct();
             changed = false;
+
             // check if the product is active or not
             // if it is not active make the availability of cartLine as false
             if((product.getActive()==0 && product.getQuantity() == 0) && cartLine.isAvailable()) {
@@ -161,15 +160,12 @@ public class CartLineServices {
                 // set the result as modified
                 response = "result=modified";
             }
-
             grandTotal += cartLine.getTotal();
             lineCount++;
         }
-
         cart.setCartLines(lineCount++);
         cart.setGrandTotal(grandTotal);
         cartRepository.saveAndFlush(cart);
-
         return response;
     }
 

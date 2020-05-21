@@ -1,6 +1,7 @@
 package com.secure.search.customer.controller;
 
 import com.secure.search.customer.common.UserModel;
+import com.secure.search.customer.model.Cart;
 import com.secure.search.customer.model.Customer;
 import com.secure.search.customer.model.Product;
 import com.secure.search.customer.model.Role;
@@ -75,6 +76,9 @@ public class CustomerController {
         addUserInSession(session,customer.getEmail(),ConstantService.USER_ROLE);
         // set the name and the id
         userModel.setId(customer.getId());
+        Cart cart = new Cart();
+        cart.setCustomer(customer);
+        customer.setCart(cart);
         session.setAttribute("userModel", userModel);
         model.addAttribute("userClickUserHome",true);
         return "redirect:/customer/user-home.htm";

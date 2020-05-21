@@ -20,6 +20,9 @@ public class Customer implements Serializable {
     private String pinCode;
     private int status;
 
+    @OneToOne
+    private Cart cart;
+
     @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",joinColumns =@JoinColumn(name = "id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
@@ -27,7 +30,6 @@ public class Customer implements Serializable {
     public Customer(){
 
     }
-
     public Customer(int id, String firstName, String lastName, String email, String password, String mobileNumber, String address, String pinCode, int status, Set<Role> roles) {
         this.id = id;
         this.firstName = firstName;
@@ -40,6 +42,14 @@ public class Customer implements Serializable {
         this.status = status;
         this.roles = roles;
     }
+
+    public Cart getCart() {
+        return cart;
+    }
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
 
     public int getId() {
         return id;
