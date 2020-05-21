@@ -2,6 +2,7 @@ package com.secure.search.customer.controller;
 
 import com.secure.search.customer.common.UserModel;
 import com.secure.search.customer.model.Customer;
+import com.secure.search.customer.repository.CardLineRepository;
 import com.secure.search.customer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,6 +21,9 @@ public class GlobalController {
 	
 	private UserModel userModel = null;
 	private Customer user = null;
+
+	@Autowired
+	CardLineRepository cardLineRepository;
 	
 	@ModelAttribute("userModel")
 	public UserModel getUserModel() {		

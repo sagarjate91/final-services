@@ -3,6 +3,7 @@ package com.secure.search.customer.service;
 import com.secure.search.customer.common.UserModel;
 import com.secure.search.customer.model.Cart;
 import com.secure.search.customer.model.CartLine;
+import com.secure.search.customer.model.Customer;
 import com.secure.search.customer.model.Product;
 import com.secure.search.customer.repository.CardLineRepository;
 import com.secure.search.customer.repository.CartRepository;
@@ -65,7 +66,6 @@ public class CartLineServices {
             // update the cart
             cart.setGrandTotal(cart.getGrandTotal() + cartLine.getTotal());
             cart.setCartLines(cart.getCartLines() + 1);
-            cartRepository.saveAndFlush(cart);
 
             response = "result=added";
         }
@@ -102,10 +102,6 @@ public class CartLineServices {
         cartLine.setTotal(product.getPrice() * count);
         cardLineRepository.saveAndFlush(cartLine);
 
-        // update the cart
-        Cart cart = this.getCart();
-        cart.setGrandTotal(cart.getGrandTotal() - oldTotal + cartLine.getTotal());
-        cartRepository.saveAndFlush(cart);
 
         return "result=updated";
     }
@@ -165,7 +161,13 @@ public class CartLineServices {
         }
         cart.setCartLines(lineCount++);
         cart.setGrandTotal(grandTotal);
+
+        UserModel userModel=((UserModel)session.getAttribute("userModel"));
+        Customer customer=new Customer();
+        customer.setId(userModel.getId());
+        cart.setCustomer(customer);
         cartRepository.saveAndFlush(cart);
+
         return response;
     }
 
