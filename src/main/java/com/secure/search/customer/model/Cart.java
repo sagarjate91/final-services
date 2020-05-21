@@ -16,6 +16,7 @@ public class Cart{
 	private int cartLines;
 
 	// linking the cart with a user
+
 	@OneToOne
 	private Customer Customer;
 

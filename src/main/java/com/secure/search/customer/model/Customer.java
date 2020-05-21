@@ -1,5 +1,7 @@
 package com.secure.search.customer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -20,6 +22,7 @@ public class Customer implements Serializable {
     private String pinCode;
     private int status=0;
 
+    @JsonIgnore
     @OneToOne(mappedBy ="Customer" ,cascade=CascadeType.ALL,fetch = FetchType.EAGER)
     private Cart cart;
 

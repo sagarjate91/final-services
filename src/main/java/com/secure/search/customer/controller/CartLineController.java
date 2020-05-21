@@ -1,6 +1,7 @@
 package com.secure.search.customer.controller;
 
 
+import com.secure.search.customer.model.CartLine;
 import com.secure.search.customer.service.CartLineServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/cart")
@@ -53,7 +56,7 @@ public class CartLineController {
                 mv.addObject("message", "One or more items inside cart has been modified!");
             }
         }
-
+        List<CartLine> cartLineList=cardLineServices.getCartLines();
         mv.addObject("cartLines", cardLineServices.getCartLines());
         return mv;
 
