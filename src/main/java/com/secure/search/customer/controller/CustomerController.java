@@ -44,6 +44,16 @@ public class CustomerController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @GetMapping("/customer/{userID}")
+    public String getCustomer(@PathVariable("userID") int id,Model model){
+        model.addAttribute("projectName", ConstantService.TITLE);
+        model.addAttribute("userClickUserViewProfile",true);
+        model.addAttribute("categories", categoryRepository.findAll());
+        Customer customer=repo.findById(id).orElse(null);
+        model.addAttribute("customer",customer);
+        return "page";
+    }
+
     @PostMapping("/signup-add")
     public String user(@Valid @ModelAttribute("command") Customer customer,RedirectAttributes redirectAttributes){
         if(repo.findByEmail(customer.getEmail())!=null){
@@ -61,7 +71,6 @@ public class CustomerController {
         }
          return "redirect:/customer/registerPanel.htm";
     }
-
 
     @PostMapping("/login-validate")
     public String loginValidate(@Valid @ModelAttribute("command")UserModel userModel,HttpSession session, RedirectAttributes redirectAttribute,Model model){
@@ -83,6 +92,7 @@ public class CustomerController {
         // set the name and the id
         userModel.setId(customer.getId());
         session.setAttribute("userModel", userModel);
+        session.setAttribute("userID", customer.getId());
         model.addAttribute("userClickUserHome",true);
         return "redirect:/customer/user-home.htm";
     }
@@ -116,11 +126,13 @@ public class CustomerController {
         return "page";
     }
 
-    @GetMapping("/view-profile.htm")
-    public String viewProfile(Model model){
+    @GetMapping("/{userID}/view-profile.htm")
+    public String viewProfile(@PathVariable("userID")int id, Model model){
         model.addAttribute("userClickUserViewProfile",true);
         model.addAttribute("title","View Profile");
         model.addAttribute("categories", categoryRepository.findAll());
+        Customer customer=repo.findById(id).orElse(null);
+        model.addAttribute("customer",customer);
         return "page";
     }
 

@@ -26,8 +26,9 @@ public class CartLine implements Serializable {
 	private double total;
 	@Column(name = "buying_price")
 	private double buyingPrice;
-	
-	
+	@Column(name = "is_available")
+	private boolean available = true;
+
 	public double getBuyingPrice() {
 		return buyingPrice;
 	}
@@ -35,9 +36,6 @@ public class CartLine implements Serializable {
 		this.buyingPrice = buyingPrice;
 	}
 
-	@Column(name = "is_available")
-	private boolean available = true;
-	
 	public int getId() {
 		return id;
 	}

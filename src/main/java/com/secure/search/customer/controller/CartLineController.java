@@ -1,6 +1,5 @@
 package com.secure.search.customer.controller;
 
-
 import com.secure.search.customer.service.CartLineServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/cart")
+@RequestMapping("/customer/cart")
 public class CartLineController {
 
     @Autowired
@@ -44,6 +43,7 @@ public class CartLineController {
                     break;
                 case "deleted":
                     mv.addObject("message", "CartLine has been successfully removed!");
+                    cardLineServices.validateCartLine();
                     break;
             }
         }
@@ -62,19 +62,19 @@ public class CartLineController {
     @RequestMapping("/{cartLineId}/update")
     public String udpateCartLine(@PathVariable int cartLineId, @RequestParam int count) {
         String response = cardLineServices.manageCartLine(cartLineId, count);
-        return "redirect:/cart/show?"+response;
+        return "redirect:/customer/cart/show?"+response;
     }
 
     @RequestMapping("/add/{productId}/product")
     public String addCartLine(@PathVariable int productId) {
         String response = cardLineServices.addCartLine(productId);
-        return "redirect:/cart/show?"+response;
+        return "redirect:/customer/cart/show?"+response;
     }
 
     @RequestMapping("/{cartLineId}/remove")
     public String removeCartLine(@PathVariable int cartLineId) {
         String response = cardLineServices.removeCartLine(cartLineId);
-        return "redirect:/cart/show?"+response;
+        return "redirect:/customer/cart/show?"+response;
     }
 
     /* after validating it redirect to checkout
@@ -85,10 +85,10 @@ public class CartLineController {
     public String validateCart() {
         String response = cardLineServices.validateCartLine();
         if(!response.equals("result=success")) {
-            return "redirect:/cart/show?"+response;
+            return "redirect:/customer/cart/show?"+response;
         }
         else {
-            return "redirect:/cart/checkout";
+            return "redirect:/customer/cart/checkout";
         }
     }
 }

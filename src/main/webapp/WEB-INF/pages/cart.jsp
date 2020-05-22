@@ -44,7 +44,7 @@
 							<c:if test="${cartLine.available == true}">
 								<button type="button" name="refreshCart" class="btn btn-info btn-sm" value="${cartLine.id}"><span class="glyphicon glyphicon-refresh"></span></button>
 							</c:if>												
-							<a href="${contextRoot}/cart/${cartLine.id}/remove" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>								
+							<a href="${contextRoot}/customer/cart/${cartLine.id}/remove" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></a>
 						</td>
 					</tr>
 					</c:forEach>
@@ -60,7 +60,7 @@
 						
 						<c:choose>
 							<c:when test="${availableCount != 0}">
-								<td><a href="${contextRoot}/cart/validate" class="btn btn-success btn-block">Checkout <span class="glyphicon glyphicon-chevron-right"></span></a></td>
+								<td><a href="${contextRoot}/customer/cart/checkout" class="btn btn-success btn-block">Checkout <span class="glyphicon glyphicon-chevron-right"></span></a></td>
 							</c:when>							
 							<c:otherwise>
 								<td><a href="javascript:void(0)" class="btn btn-success btn-block disabled"><strike>Checkout <span class="glyphicon glyphicon-chevron-right"></span></strike></a></td>

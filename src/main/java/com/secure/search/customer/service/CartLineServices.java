@@ -49,16 +49,19 @@ public class CartLineServices {
         Cart cart = this.getCart();
         String response = null;
         CartLine cartLine = cardLineRepository.getByCartAndProduct(cart.getId(), productId);
+        Product product = productRepository.findById(productId).orElse(null);
         if(cartLine==null) {
             // add a new cartLine if a new product is getting added
             cartLine = new CartLine();
-            Product product = productRepository.findById(productId).orElse(null);
-            // transfer the product details to cartLine
+             // transfer the product details to cartLine
             cartLine.setCartId(cart.getId());
             cartLine.setProduct(product);
             cartLine.setProductCount(1);
             cartLine.setBuyingPrice(product.getPrice());
             cartLine.setTotal(product.getPrice());
+
+            product.setQuantity(product.getQuantity()-1);
+            productRepository.saveAndFlush(product);
 
             // insert a new cartLine
             cardLineRepository.save(cartLine);
@@ -88,20 +91,23 @@ public class CartLineServices {
         CartLine cartLine = cardLineRepository.findById(cartLineId).orElse(null);
 
         double oldTotal = cartLine.getTotal();
-
         Product product = cartLine.getProduct();
 
         // check if that much quantity is available or not
         if(product.getQuantity() < count) {
             return "result=unavailable";
         }
-
+        if(cartLine.getProductCount()>count){
+            product.setQuantity(product.getQuantity()+(cartLine.getProductCount()-count));
+        }else {
+            product.setQuantity(product.getQuantity()-(count-cartLine.getProductCount()));
+        }
+        productRepository.saveAndFlush(product);
         // update the cart line
         cartLine.setProductCount(count);
         cartLine.setBuyingPrice(product.getPrice());
         cartLine.setTotal(product.getPrice() * count);
         cardLineRepository.saveAndFlush(cartLine);
-
 
         return "result=updated";
     }
@@ -166,6 +172,7 @@ public class CartLineServices {
         Customer customer=new Customer();
         customer.setId(userModel.getId());
         cart.setCustomer(customer);
+        userModel.setCart(cart);
         cartRepository.saveAndFlush(cart);
 
         return response;
@@ -174,11 +181,19 @@ public class CartLineServices {
     public String removeCartLine(int cartLineId) {
 
        CartLine cartLine = cardLineRepository.findById(cartLineId).orElse(null);
+       Product product = cartLine.getProduct();
+       product.setQuantity(product.getQuantity()+cartLine.getProductCount());
+
         // deduct the cart
         // update the cart
         Cart cart = this.getCart();
         cart.setGrandTotal(cart.getGrandTotal() - cartLine.getTotal());
         cart.setCartLines(cart.getCartLines() - 1);
+        UserModel userModel=((UserModel)session.getAttribute("userModel"));
+        Customer customer=new Customer();
+        customer.setId(userModel.getId());
+        cart.setCustomer(customer);
+        userModel.setCart(cart);
         cartRepository.saveAndFlush(cart);
 
         // remove the cartLine

@@ -7,7 +7,6 @@ import com.secure.search.customer.repository.CustomerRepository;
 import com.secure.search.customer.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -65,5 +64,9 @@ public class CustomerService {
 
     public List<Product> productsCategory(String categoryName) {
         return productRepository.findByCategory(categoryName);
+    }
+
+    public Customer findById(int id) {
+        return customerRepository.findById(id).orElse(null);
     }
 }

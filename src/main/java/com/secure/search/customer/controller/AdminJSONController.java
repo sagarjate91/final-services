@@ -15,6 +15,7 @@ public class AdminJSONController {
     @Autowired
     CustomerService service;
 
+
     @GetMapping("/all/Users")
     public List<Customer> users(){
         return service.users();

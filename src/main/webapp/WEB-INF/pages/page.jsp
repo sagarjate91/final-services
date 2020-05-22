@@ -25,6 +25,7 @@
 <script>
 	window.menu = '${title}';
 	window.contextRoot = '${contextRoot}'
+	window.userID='${sessionScope.role}'
 	
 </script>
 

@@ -26,9 +26,8 @@
 					<c:if test="${sessionScope.role=='USER'}">
 
 						<li id="userhome"><a href="${contextRoot}/customer/user-home.htm">All Products</a></li>
-						<li id="userviewprofile"><a href="${contextRoot}/customer/view-profile.htm">Profile</a></li>
-						<li id="purchaseproduct"><a href="${contextRoot}/customer/purchase-product.htm">Purchase product</a></li>
-                        <li id="myorder"><a href="${contextRoot}/customer/my-order.htm">My Order</a></li>
+						<li id="myorder"><a href="${contextRoot}/customer/cart/show">My Order</a></li>
+						<li id="userviewprofile"><a href="${contextRoot}/customer/${sessionScope.userID}/view-profile.htm">Profile</a></li>
 
                         <li class="dropdown" id="userModel">
                         						  <a class="btn btn-default dropdown-toggle" href="javascript:void(0)" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -37,7 +36,7 @@
                         						  </a>
                         						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                         		                       <li id="cart">
-                        			                        <a href="${contextRoot}/cart/show">
+                        			                        <a href="${contextRoot}/customer/cart/show">
                         			                        	<span class="glyphicon glyphicon-shopping-cart"></span>&#160;<span class="badge">${userModel.cart.cartLines}</span> - &#8377; ${userModel.cart.grandTotal}
                         			                        </a>
                         			                    </li>

@@ -326,8 +326,7 @@ $(function() {
                         str += '<a href="'+ window.contextRoot+ '/customer/show/'+ data
                         		 + '/product" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span></a> &#160;';
 
-                        str += '<a href="'+ window.contextRoot+ '/customer/manage/'+ data
-                          + '/product" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>';
+                        str += '<a href="'+ window.contextRoot+ '/customer/cart/show" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>';
 
                       	return str;
                         }
@@ -432,7 +431,6 @@ $(function() {
 
 
 //.....................................................................................
-
 
 
     /*validating the loginform*/
@@ -632,7 +630,7 @@ $(function() {
     			}
     			else {
     				// use the window.location.href property to send the request to the server
-    				var updateUrl = window.contextRoot + '/cart/' + cartLineId + '/update?count=' + countField.val();
+    				var updateUrl = window.contextRoot + '/customer/cart/' + cartLineId + '/update?count=' + countField.val();
     				window.location.href = updateUrl;
     			}
     		}
