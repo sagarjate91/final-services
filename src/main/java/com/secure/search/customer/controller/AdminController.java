@@ -10,13 +10,18 @@ import com.secure.search.customer.repository.ProductRecoverRepository;
 import com.secure.search.customer.repository.ProductRepository;
 import com.secure.search.customer.service.ConstantService;
 import com.secure.search.customer.service.CustomerService;
+import com.secure.search.customer.service.RecoverService;
 import com.secure.search.customer.util.FileUploadUtility;
 import com.secure.search.customer.validator.ProductValidator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,6 +30,8 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+	
+	Logger logger= LoggerFactory.getLogger(AdminController.class);
 
     @Autowired
     CustomerService service;
@@ -115,23 +122,31 @@ public class AdminController {
     @PostMapping(value="/product-upload")
     public String productAdd(@Valid @ModelAttribute("command")Product product, HttpServletRequest request,BindingResult results,Model model){
 
-        // mandatory file upload check
+         logger.info("step 1");
+    	// mandatory file upload check
         if(product.getProductId() == 0) {
+        	logger.info("step 2");
             new ProductValidator().validate(product, results);
+            logger.info("step 3");
         }
         else {
+        	logger.info("step 4");
             // edit check only when the file has been selected
             if(!product.getFile().getOriginalFilename().equals("")) {
                 new ProductValidator().validate(product, results);
             }
+            logger.info("step 5");
         }
         if(results.hasErrors()) {
             model.addAttribute("message", "Validation fails for adding the product!");
             return "redirect:/admin/ProductList.htm";
         }
 
+        logger.info("step 6");
         if(!product.getFile().getOriginalFilename().equals("")){
+        	logger.info("step 7");
             FileUploadUtility.uploadProductDetails(request,product.getFile(),product);
+            logger.info("step 8");
         }
 
         product.setActive(0);
@@ -157,12 +172,13 @@ public class AdminController {
     }
 
     @PostMapping({"/admin-validate"})
-    public String adminValidate(@ModelAttribute("command") Customer customer, Model model, HttpSession session){
+    public String adminValidate(@ModelAttribute("command") Customer customer, Model model, HttpSession session,RedirectAttributes redirectAttributes){
         if(customer.getEmail().equalsIgnoreCase("admin@gmail.com") && customer.getPassword().equalsIgnoreCase("123")){
             addUserInSession(session,customer.getEmail(),ConstantService.ADMIN_ROLE);
             return "redirect:adminHome.htm";
         }else{
-            return "redirect:adminPanel.htm";
+        	redirectAttributes.addFlashAttribute("message", "Wrong Email and password,Please try new one");
+            return "redirect:/customer/adminPanel.htm";
         }
     }
 

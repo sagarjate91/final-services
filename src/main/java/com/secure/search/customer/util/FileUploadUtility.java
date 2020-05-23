@@ -1,27 +1,22 @@
 package com.secure.search.customer.util;
 
-
-import com.secure.search.customer.model.Product;
-import org.springframework.web.multipart.MultipartFile;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import org.springframework.web.multipart.MultipartFile;
+import com.secure.search.customer.model.Product;
 
 
 public class FileUploadUtility {
 	
-	private static String REAL_PATH = null;
-
 	public static void uploadProductDetails(HttpServletRequest request,MultipartFile file, Product product) {
-
-		REAL_PATH = request.getSession().getServletContext().getRealPath("/assets/images/");
-
-		if(!new File(REAL_PATH).exists()) {
-			new File(REAL_PATH).mkdirs();
-		}
 		try {
-			File localFile = new File(REAL_PATH + file.getOriginalFilename());
-			file.transferTo(localFile);
+			
+			byte[] bytes = file.getBytes();	
+			Path path = Paths.get("/assets/images/" + file.getOriginalFilename());
+			Files.write(path, bytes); 
 			product.setFileName(file.getOriginalFilename());
 
 		} catch (Exception e) {

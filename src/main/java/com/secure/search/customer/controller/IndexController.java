@@ -53,12 +53,15 @@ public class IndexController {
     }
 
     @GetMapping({"/adminPanel.htm"})
-    public String adminUser(Model model){
+    public String adminUser(@ModelAttribute("message")String message,Model model){
         model.addAttribute("projectName", ConstantService.TITLE);
         model.addAttribute("title", "Admin Page");
         model.addAttribute("userClickAdmin",true);
         model.addAttribute("action","admin/admin-validate");
         model.addAttribute("command",new UserModel());
+        if(message!=null){
+        	model.addAttribute("message", message);
+        }
         return "page";
     }
 }
