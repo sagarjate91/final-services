@@ -1,0 +1,10 @@
+applications:
+- name: secure-search-engine-cloud
+path: target/secure-search-engine-cloud.war
+domain: 
+memory: 700M
+instances: 1
+services:
+ - mysql
+  
+  
