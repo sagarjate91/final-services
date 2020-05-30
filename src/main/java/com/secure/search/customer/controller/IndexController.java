@@ -38,7 +38,6 @@ public class IndexController {
         return "error.jsp";
     }
 
-
     @GetMapping({"/signup","/registerPanel.htm"})
     public String signup(Model model, @ModelAttribute("message") String message){
         model.addAttribute("projectName", ConstantService.TITLE);

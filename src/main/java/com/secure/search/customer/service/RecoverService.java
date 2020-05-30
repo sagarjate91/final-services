@@ -32,6 +32,7 @@ public class RecoverService {
                 .stream()
                 .filter(p->p.getCategory()==null || p.getFileName()==null || p.getPostName()==null || p.getModelNo()==null || p.getDescription()==null)
                 .collect(Collectors.toList());
+     
         products
                 .stream()
                 .filter(p -> {

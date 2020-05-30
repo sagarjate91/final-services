@@ -380,6 +380,16 @@ $(function() {
                     data:'address'
                 },
                 {
+                    data:'id',
+                    bSortable : false,
+                    mRender : function(data, type, row) {
+                    	 
+                    	  var str = '';
+                          str += '<a href="'+ window.contextRoot+ '/admin/'+row.id+'/delete" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a> &#160;';
+                          return str;
+                    }    
+                },
+                {
                     data:'status',
                     bSortable : false,
                     mRender : function(data, type, row) {

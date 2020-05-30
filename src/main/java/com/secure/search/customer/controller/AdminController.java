@@ -52,14 +52,24 @@ public class AdminController {
     CategoryRepository categoryRepository;
 
     @GetMapping({"/adminHome.htm"})
-    public String adminHome(Model model){
+    public String adminHome(Model model,@ModelAttribute("message")String message){
         model.addAttribute("projectName", ConstantService.TITLE);
         model.addAttribute("userClickAdminHome",true);
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("title", "Admin Home");
+        if(message!=null){
+           model.addAttribute("message",message+"");
+        }
         return "page";
     }
-
+    
+    @GetMapping({"/{id}/delete"})
+    public String adminDelete(@PathVariable("")int id,RedirectAttributes redirectAttributes){
+    	customerRepository.deleteById(id);
+    	redirectAttributes.addFlashAttribute("message", "User deleted successfully!");
+        return "redirect:/admin/adminHome.htm";
+    }
+    
     @GetMapping({"/Product.htm"})
     public String adminProduct(Model model){
         model.addAttribute("projectName", ConstantService.TITLE);
@@ -125,31 +135,23 @@ public class AdminController {
     @PostMapping(value="/product-upload")
     public String productAdd(@Valid @ModelAttribute("command")Product product, HttpServletRequest request,BindingResult results,Model model){
 
-         logger.info("step 1");
-    	// mandatory file upload check
+        // mandatory file upload check
         if(product.getProductId() == 0) {
-        	logger.info("step 2");
-            new ProductValidator().validate(product, results);
-            logger.info("step 3");
-        }
+           new ProductValidator().validate(product, results);
+         }
         else {
-        	logger.info("step 4");
             // edit check only when the file has been selected
             if(!product.getFile().getOriginalFilename().equals("")) {
                 new ProductValidator().validate(product, results);
             }
-            logger.info("step 5");
         }
         if(results.hasErrors()) {
             model.addAttribute("message", "Validation fails for adding the product!");
             return "redirect:/admin/ProductList.htm";
         }
 
-        logger.info("step 6");
         if(!product.getFile().getOriginalFilename().equals("")){
-        	logger.info("step 7");
             FileUploadUtility.uploadProductDetails(product.getFile(),product);
-            logger.info("step 8");
         }
 
         product.setActive(0);

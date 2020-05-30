@@ -21,7 +21,6 @@
                             <thead>
                             
                                <tr>
-                                   
                                    <th>Id</th>
                                    <th>FirstName</th>
                                    <th>LastName</th>
@@ -29,6 +28,7 @@
                                    <th>Mobile</th>
                                    <th>PinCode</th>
                                    <th>Address</th>
+                                   <th>delete</th>
                                    <th>Status</th>
                                 </tr>
                                
@@ -37,6 +37,7 @@
                                <tbody>
                                
                                  <tr>
+                                     <td></td>
                                      <td></td>
                                      <td></td>
                                      <td></td>
