@@ -276,15 +276,6 @@ $(function() {
                         }
                     },
                     {
-                        data : 'postName',
-                        mRender : function(data, type, row) {
-                           if (data==null) {
-                               return '<span style="color:red">Malicious data!</span>';
-                           }
-                           return data;
-                        }
-                    },
-                    {
                         data : 'category',
                         mRender : function(data, type, row) {
                           if (data==null) {
@@ -316,6 +307,9 @@ $(function() {
                             }
                             return data;
                          }
+                    },
+                    {
+                       data : 'description',
                     },
                     {
                         data : 'productId',

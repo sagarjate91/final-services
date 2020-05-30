@@ -39,10 +39,10 @@
 
                             <th></th>
                             <th>Product</th>
-                            <th>Category</th>
                             <th>Model</th>
                             <th>Price</th>
                             <th>Quantity</th>
+                            <th>Description</th>
                             <th></th>
 
                         </tr>
