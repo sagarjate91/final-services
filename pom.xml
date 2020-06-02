@@ -85,7 +85,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <finalName>secure-search-engine-cloud</finalName>
+        <finalName>secure-search-engine-cloud-services</finalName>
     </build>
 
     <packaging>war</packaging>

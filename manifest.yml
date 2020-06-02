@@ -2,7 +2,7 @@ applications:
 - name: secure-search-engine-cloud
 path: target/secure-search-engine-cloud.war
 domain: cfapps.io
-memory: 700M
+memory: 300M
 instances: 1
 services:
 - mysql
