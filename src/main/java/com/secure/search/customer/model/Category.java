@@ -1,5 +1,10 @@
 package com.secure.search.customer.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -7,6 +12,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CATEGORY")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Category {
 
     @Id
@@ -15,37 +24,5 @@ public class Category {
     private String name;
     private String description_category;
 
-    public Category(){
 
-    }
-
-    public Category(int id, String name, String description_category) {
-        this.id = id;
-        this.name = name;
-        this.description_category = description_category;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription_category() {
-        return description_category;
-    }
-
-    public void setDescription_category(String description_category) {
-        this.description_category = description_category;
-    }
 }

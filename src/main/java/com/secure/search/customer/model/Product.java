@@ -1,5 +1,9 @@
 package com.secure.search.customer.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnTransformer;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -7,6 +11,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "PRODUCT")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Product {
 
     @Id
@@ -34,109 +42,5 @@ public class Product {
     @Transient
     private MultipartFile file;
 
-    public Product(){
 
-    }
-
-    public Product(int productId, String fileName, String postName, String category, String modelNo, Long price, Integer quantity, String description, int active, int view, MultipartFile file) {
-        this.productId = productId;
-        this.fileName = fileName;
-        this.postName = postName;
-        this.category = category;
-        this.modelNo = modelNo;
-        this.price = price;
-        this.quantity = quantity;
-        this.description = description;
-        this.active = active;
-        this.view = view;
-        this.file = file;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getPostName() {
-        return postName;
-    }
-
-    public void setPostName(String postName) {
-        this.postName = postName;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getModelNo() {
-        return modelNo;
-    }
-
-    public void setModelNo(String modelNo) {
-        this.modelNo = modelNo;
-    }
-
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getActive() {
-        return active;
-    }
-
-    public void setActive(int active) {
-        this.active = active;
-    }
-
-    public int getView() {
-        return view;
-    }
-
-    public void setView(int view) {
-        this.view = view;
-    }
-
-    public MultipartFile getFile() {
-        return file;
-    }
-
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
 }
