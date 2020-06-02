@@ -1,5 +1,12 @@
 package com.secure.search.customer.service;
 
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.secure.search.customer.common.UserModel;
 import com.secure.search.customer.model.Cart;
 import com.secure.search.customer.model.CartLine;
@@ -8,15 +15,11 @@ import com.secure.search.customer.model.Product;
 import com.secure.search.customer.repository.CardLineRepository;
 import com.secure.search.customer.repository.CartRepository;
 import com.secure.search.customer.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Service
 public class CartLineServices {
-
+	
+	
     @Autowired
     ProductRepository productRepository;
 
@@ -31,7 +34,7 @@ public class CartLineServices {
 
     @Autowired
     private HttpSession session;
-
+   
     private Cart getCart() {
 
         UserModel userModel=((UserModel)session.getAttribute("userModel"));

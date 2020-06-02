@@ -1,17 +1,18 @@
 package com.secure.search.customer.service;
 
-import com.secure.search.customer.model.Product;
-import com.secure.search.customer.model.ProductRecover;
-import com.secure.search.customer.repository.ProductRecoverRepository;
-import com.secure.search.customer.repository.ProductRepository;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.secure.search.customer.model.Product;
+import com.secure.search.customer.model.ProductRecover;
+import com.secure.search.customer.repository.ProductRecoverRepository;
+import com.secure.search.customer.repository.ProductRepository;
 
 @Service
 public class RecoverService {
@@ -26,7 +27,7 @@ public class RecoverService {
 
     @Scheduled(initialDelay =100000,fixedRate =100000)
     public void productRecover(){
-
+        	
         List<Product> productList=productRepository.findAll();
         List<Product> products=productList
                 .stream()
@@ -56,5 +57,6 @@ public class RecoverService {
                 }).collect(Collectors.toList());
 
         logger.info("Scheduling....");
+       
     }
 }
