@@ -19,8 +19,8 @@ public class GlobalController {
 	@Autowired
 	private HttpSession session;
 	
-	private UserModel userModel = null;
-	private Customer user = null;
+	public UserModel userModel = null;
+	public Customer user = null;
 
 	@Autowired
 	CardLineRepository cardLineRepository;

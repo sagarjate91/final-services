@@ -1,17 +1,16 @@
 package com.secure.search.customer.util;
 
+import com.secure.search.customer.dto.ProductDTO;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import com.secure.search.customer.model.Product;
-
 
 public class FileUploadUtility {
 	
-	public static void uploadProductDetails(MultipartFile file, Product product) {
+	public static void uploadProductDetails(MultipartFile file, ProductDTO product) {
 		try {
 			
 			byte[] bytes = file.getBytes();	

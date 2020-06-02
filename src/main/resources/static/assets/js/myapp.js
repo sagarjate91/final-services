@@ -317,12 +317,9 @@ $(function() {
                         mRender : function(data, type, row) {
 
                         var str = '';
-                        str += '<a href="'+ window.contextRoot+ '/customer/show/'+ data
-                        		 + '/product" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span></a> &#160;';
-
-                        str += '<a href="'+ window.contextRoot+ '/customer/cart/show" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a>';
-
+                        str += '<a href="'+ window.contextRoot+ '/customer/show/'+ data+ '/product" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span></a>';
                       	return str;
+
                         }
                     }
 

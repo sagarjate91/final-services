@@ -1,11 +1,11 @@
 package com.secure.search.customer.controller;
 
 import com.secure.search.customer.service.CartLineServices;
+import com.secure.search.customer.service.ConstantService;
+import com.secure.search.customer.service.URLServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -15,7 +15,7 @@ public class CartLineController {
     @Autowired
     CartLineServices cardLineServices;
 
-    @RequestMapping("/show")
+    @GetMapping("/show")
     public ModelAndView showCart(@RequestParam(name = "result", required = false) String result) {
 
         ModelAndView mv = new ModelAndView("page");
@@ -25,26 +25,28 @@ public class CartLineController {
         if(result!=null) {
             switch(result) {
                 case "added":
-                    mv.addObject("message", "Product has been successfully added inside cart!");
+                    mv.addObject(ConstantService.MESSAGE, "Product has been successfully added inside cart!");
                     cardLineServices.validateCartLine();
                     break;
                 case "unavailable":
-                    mv.addObject("message", "Product quantity is not available!");
+                    mv.addObject(ConstantService.MESSAGE, "Product quantity is not available!");
                     break;
                 case "updated":
-                    mv.addObject("message", "Cart has been updated successfully!");
+                    mv.addObject(ConstantService.MESSAGE, "Cart has been updated successfully!");
                     cardLineServices.validateCartLine();
                     break;
                 case "modified":
-                    mv.addObject("message", "One or more items inside cart has been modified!");
+                    mv.addObject(ConstantService.MESSAGE, "One or more items inside cart has been modified!");
                     break;
                 case "maximum":
-                    mv.addObject("message", "Maximum limit for the item has been reached!");
+                    mv.addObject(ConstantService.MESSAGE, "Maximum limit for the item has been reached!");
                     break;
                 case "deleted":
-                    mv.addObject("message", "CartLine has been successfully removed!");
+                    mv.addObject(ConstantService.MESSAGE, "CartLine has been successfully removed!");
                     cardLineServices.validateCartLine();
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + result);
             }
         }
         else {
@@ -59,33 +61,33 @@ public class CartLineController {
     }
 
 
-    @RequestMapping("/{cartLineId}/update")
+    @GetMapping("/{cartLineId}/update")
     public String udpateCartLine(@PathVariable int cartLineId, @RequestParam int count) {
         String response = cardLineServices.manageCartLine(cartLineId, count);
-        return "redirect:/customer/cart/show?"+response;
+        return URLServices.CART_SHOW_URL +response;
     }
 
-    @RequestMapping("/add/{productId}/product")
+    @GetMapping("/add/{productId}/product")
     public String addCartLine(@PathVariable int productId) {
         String response = cardLineServices.addCartLine(productId);
-        return "redirect:/customer/cart/show?"+response;
+        return URLServices.CART_SHOW_URL+response;
     }
 
-    @RequestMapping("/{cartLineId}/remove")
+    @GetMapping("/{cartLineId}/remove")
     public String removeCartLine(@PathVariable int cartLineId) {
         String response = cardLineServices.removeCartLine(cartLineId);
-        return "redirect:/customer/cart/show?"+response;
+        return URLServices.CART_SHOW_URL+response;
     }
 
     /* after validating it redirect to checkout
      * if result received is success proceed to checkout
      * else display the message to the user about the changes in cart page
      * */
-    @RequestMapping("/validate")
+    @GetMapping("/validate")
     public String validateCart() {
         String response = cardLineServices.validateCartLine();
         if(!response.equals("result=success")) {
-            return "redirect:/customer/cart/show?"+response;
+            return URLServices.CART_SHOW_URL+response;
         }
         else {
             return "redirect:/customer/cart/checkout";

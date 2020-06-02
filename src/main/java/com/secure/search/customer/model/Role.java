@@ -20,7 +20,7 @@ public class Role {
 
     @Id
     @GeneratedValue
-    private int role_id;
+    private int roleId;
     private String role;
 
 

@@ -38,9 +38,8 @@ public class Product {
     private String description;
     private int active;
     private int view;
-
+    
     @Transient
     private MultipartFile file;
-
 
 }

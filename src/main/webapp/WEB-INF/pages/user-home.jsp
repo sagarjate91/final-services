@@ -43,8 +43,8 @@
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Description</th>
-                            <th></th>
-
+                            <th>Book</th>
+                           
                         </tr>
 
                         </thead>

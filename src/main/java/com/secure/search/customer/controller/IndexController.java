@@ -1,34 +1,35 @@
 package com.secure.search.customer.controller;
 
-import com.secure.search.customer.common.UserModel;
-import com.secure.search.customer.service.ConstantService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.secure.search.customer.common.UserModel;
+import com.secure.search.customer.service.ConstantService;
+
 @Controller
-@RequestMapping("/customer")
+@RequestMapping(ConstantService.USER)
 public class IndexController {
 
     @GetMapping({"/","/home.htm"})
     public String index(Model model){
-        model.addAttribute("projectName", ConstantService.TITLE);
+        model.addAttribute(ConstantService.PROJECT_NAME, ConstantService.TITLE);
         model.addAttribute("userClickHome",true);
-        model.addAttribute("title", "Home");
+        model.addAttribute(ConstantService.TITLE, "Home");
         return "page";
     }
 
     @GetMapping({"/login","/user.htm"})
     public String loginUser(Model model,@ModelAttribute("message") String message){
-        model.addAttribute("projectName", ConstantService.TITLE);
-        model.addAttribute("title", "Login Page");
+        model.addAttribute(ConstantService.PROJECT_NAME, ConstantService.TITLE);
+        model.addAttribute(ConstantService.TITLE, "Login Page");
         model.addAttribute("userClickUser",true);
-        model.addAttribute("action","customer/login-validate");
-        model.addAttribute("command",new UserModel());
+        model.addAttribute(ConstantService.ACTION,"customer/login-validate");
+        model.addAttribute(ConstantService.COMMAND,new UserModel());
         if(message!=null){
-            model.addAttribute("message",message+"");
+            model.addAttribute(ConstantService.MESSAGE,message+"");
         }
         return "page";
     }
@@ -40,26 +41,26 @@ public class IndexController {
 
     @GetMapping({"/signup","/registerPanel.htm"})
     public String signup(Model model, @ModelAttribute("message") String message){
-        model.addAttribute("projectName", ConstantService.TITLE);
-        model.addAttribute("title", "Signup Page");
+        model.addAttribute(ConstantService.PROJECT_NAME, ConstantService.TITLE);
+        model.addAttribute(ConstantService.TITLE, "Signup Page");
         model.addAttribute("userClickRegister",true);
-        model.addAttribute("action","customer/signup-add");
-        model.addAttribute("command",new UserModel());
+        model.addAttribute(ConstantService.ACTION,"customer/signup-add");
+        model.addAttribute(ConstantService.COMMAND,new UserModel());
         if(message!=null){
-            model.addAttribute("message",message+"");
+            model.addAttribute(ConstantService.MESSAGE,message+"");
         }
         return "page";
     }
 
     @GetMapping({"/adminPanel.htm"})
     public String adminUser(@ModelAttribute("message")String message,Model model){
-        model.addAttribute("projectName", ConstantService.TITLE);
-        model.addAttribute("title", "Admin Page");
+        model.addAttribute(ConstantService.PROJECT_NAME, ConstantService.TITLE);
+        model.addAttribute(ConstantService.TITLE, "Admin Page");
         model.addAttribute("userClickAdmin",true);
-        model.addAttribute("action","admin/admin-validate");
-        model.addAttribute("command",new UserModel());
+        model.addAttribute(ConstantService.ACTION,"admin/admin-validate");
+        model.addAttribute(ConstantService.COMMAND,new UserModel());
         if(message!=null){
-        	model.addAttribute("message", message);
+        	model.addAttribute(ConstantService.MESSAGE, message);
         }
         return "page";
     }

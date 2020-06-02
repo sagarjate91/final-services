@@ -2,6 +2,7 @@ package com.secure.search.customer.controller;
 
 import com.secure.search.customer.model.Customer;
 import com.secure.search.customer.model.Product;
+import com.secure.search.customer.service.ConstantService;
 import com.secure.search.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping(ConstantService.ADMIN)
 public class AdminJSONController {
 
     @Autowired

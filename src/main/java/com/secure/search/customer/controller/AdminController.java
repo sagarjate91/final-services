@@ -1,7 +1,10 @@
 package com.secure.search.customer.controller;
 
+import com.secure.search.customer.dto.CategoryDTO;
+import com.secure.search.customer.dto.CustomerDTO;
+import com.secure.search.customer.dto.ProductDTO;
+import com.secure.search.customer.exception.ProductNotFoundException;
 import com.secure.search.customer.model.Category;
-import com.secure.search.customer.model.Customer;
 import com.secure.search.customer.model.Product;
 import com.secure.search.customer.model.ProductRecover;
 import com.secure.search.customer.repository.CategoryRepository;
@@ -26,7 +29,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping(ConstantService.ADMIN)
 public class AdminController {
 	
 	Logger logger= LoggerFactory.getLogger(AdminController.class);
@@ -48,12 +51,12 @@ public class AdminController {
 
     @GetMapping({"/adminHome.htm"})
     public String adminHome(Model model,@ModelAttribute("message")String message){
-        model.addAttribute("projectName", ConstantService.TITLE);
+        model.addAttribute(ConstantService.PROJECT_NAME, ConstantService.TITLE);
         model.addAttribute("userClickAdminHome",true);
-        model.addAttribute("categories", categoryRepository.findAll());
-        model.addAttribute("title", "Admin Home");
+        model.addAttribute(ConstantService.CATEGORIES, categoryRepository.findAll());
+        model.addAttribute(ConstantService.TITLE, "Admin Home");
         if(message!=null){
-           model.addAttribute("message",message+"");
+           model.addAttribute(ConstantService.MESSAGE,message+"");
         }
         return "page";
     }
@@ -61,74 +64,81 @@ public class AdminController {
     @GetMapping({"/{id}/delete"})
     public String adminDelete(@PathVariable("")int id,RedirectAttributes redirectAttributes){
     	customerRepository.deleteById(id);
-    	redirectAttributes.addFlashAttribute("message", "User deleted successfully!");
+    	redirectAttributes.addFlashAttribute(ConstantService.MESSAGE, "User deleted successfully!");
         return "redirect:/admin/adminHome.htm";
     }
     
     @GetMapping({"/Product.htm"})
     public String adminProduct(Model model){
-        model.addAttribute("projectName", ConstantService.TITLE);
+        model.addAttribute(ConstantService.PROJECT_NAME, ConstantService.TITLE);
         model.addAttribute("userClickAdminProduct",true);
-        model.addAttribute("action","admin/product-upload");
-        model.addAttribute("command",new Product());
-        model.addAttribute("categories", categoryRepository.findAll());
-        model.addAttribute("category-model",new Category());
-        model.addAttribute("title", "Admin Product");
+        model.addAttribute(ConstantService.ACTION,"admin/product-upload");
+        model.addAttribute(ConstantService.COMMAND,new ProductDTO());
+        model.addAttribute(ConstantService.CATEGORIES, categoryRepository.findAll());
+        model.addAttribute(ConstantService.CATEGORY_MODEL,new CategoryDTO());
+        model.addAttribute(ConstantService.TITLE, "Admin Product");
         return "page";
     }
 
     @PostMapping("/manage/category")
-    public String addCategory(@ModelAttribute("category") Category category,Model model){
-        categoryRepository.save(category);
-        model.addAttribute("message","Category added successfully!");
+    public String addCategory(@ModelAttribute("category") CategoryDTO category, Model model){
+
+        Category category1=new Category();
+        category1.setName(category.getName());
+        category1.setDescription_category(category.getDescription_category());
+
+        categoryRepository.save(category1);
+        model.addAttribute(ConstantService.MESSAGE,"Category added successfully!");
         return "redirect:/admin/Product.htm";
     }
 
-
     @GetMapping({"/ProductList.htm"})
     public String adminProductList(Model model){
-        model.addAttribute("projectName", ConstantService.TITLE);
+        model.addAttribute(ConstantService.PROJECT_NAME, ConstantService.TITLE);
         model.addAttribute("userClickAdminProductList",true);
-        model.addAttribute("categories", categoryRepository.findAll());
-        model.addAttribute("title", "Product List");
+        model.addAttribute(ConstantService.CATEGORIES, categoryRepository.findAll());
+        model.addAttribute(ConstantService.TITLE, "Product List");
         return "page";
     }
 
     @GetMapping("/show/category/{categoryName}/products")
     public String adminCategoryProducts(@PathVariable("categoryName") String categoryName,Model model){
-        model.addAttribute("projectName", ConstantService.TITLE);
+        model.addAttribute(ConstantService.PROJECT_NAME, ConstantService.TITLE);
         model.addAttribute("userClickCategoryProducts",true);
-        model.addAttribute("categories", categoryRepository.findAll());
-        model.addAttribute("category",categoryName);
-        model.addAttribute("title",categoryName);
+        model.addAttribute(ConstantService.CATEGORIES, categoryRepository.findAll());
+        model.addAttribute(ConstantService.CATEGORY,categoryName);
+        model.addAttribute(ConstantService.TITLE,categoryName);
         return "page";
     }
 
     @GetMapping("/show/{id}/product")
-    public String showSingleProduct(@PathVariable int id,Model model){
+    public String showSingleProduct(@PathVariable int id,Model model) throws ProductNotFoundException {
         Product product=productRepository.findById(id).orElse(null);
-        model.addAttribute("projectName", ConstantService.TITLE);
+        if(product==null){
+            throw new ProductNotFoundException("Product not found exception");
+        }
+        model.addAttribute(ConstantService.PROJECT_NAME, ConstantService.TITLE);
         model.addAttribute("adminClickShowSingleProduct",true);
-        model.addAttribute("categories", categoryRepository.findAll());
-        model.addAttribute("category",product.getCategory());
-        model.addAttribute("title",product.getCategory());
-        model.addAttribute("product",product);
+        model.addAttribute(ConstantService.CATEGORIES, categoryRepository.findAll());
+        model.addAttribute(ConstantService.CATEGORY,product.getCategory());
+        model.addAttribute(ConstantService.TITLE,product.getCategory());
+        model.addAttribute(ConstantService.PRODUCT,product);
         return "page";
     }
 
     @GetMapping({"/manage/{id}/product"})
     public String adminProductUpdate(@PathVariable("id") int id, Model model){
-        model.addAttribute("projectName", ConstantService.TITLE);
+        model.addAttribute(ConstantService.PROJECT_NAME, ConstantService.TITLE);
         model.addAttribute("userClickAdminProduct",true);
-        model.addAttribute("action","admin/product-upload");
-        model.addAttribute("command",productRepository.findById(id));
-        model.addAttribute("categories", categoryRepository.findAll());
-        model.addAttribute("category-model",new Category());
+        model.addAttribute(ConstantService.ACTION,"admin/product-upload");
+        model.addAttribute(ConstantService.COMMAND,productRepository.findById(id));
+        model.addAttribute(ConstantService.CATEGORIES, categoryRepository.findAll());
+        model.addAttribute(ConstantService.CATEGORY_MODEL,new CategoryDTO());
         return "page";
     }
 
     @PostMapping(value="/product-upload")
-    public String productAdd(@Valid @ModelAttribute("command")Product product, HttpServletRequest request,BindingResult results,Model model){
+    public String productAdd(@Valid @ModelAttribute("command") ProductDTO product, HttpServletRequest request, BindingResult results, Model model){
 
         // mandatory file upload check
         if(product.getProductId() == 0) {
@@ -141,7 +151,7 @@ public class AdminController {
             }
         }
         if(results.hasErrors()) {
-            model.addAttribute("message", "Validation fails for adding the product!");
+            model.addAttribute(ConstantService.MESSAGE,"Validation fails for adding the product!");
             return "redirect:/admin/ProductList.htm";
         }
 
@@ -149,9 +159,16 @@ public class AdminController {
             FileUploadUtility.uploadProductDetails(product.getFile(),product);
         }
 
-        product.setActive(0);
-        product.setView(0);
-        productRepository.saveAndFlush(product);
+        Product product1=new Product();
+        product1.setProductId(product.getProductId());
+        product1.setFileName(product.getFileName());
+        product1.setPostName(product.getPostName());
+        product1.setCategory(product.getCategory());
+        product1.setModelNo(product.getModelNo());
+        product1.setPrice(product.getPrice());
+        product1.setQuantity(product.getQuantity());
+        product1.setDescription(product.getDescription());
+        productRepository.saveAndFlush(product1);
 
         // backup for product
         ProductRecover productRecover=new ProductRecover();
@@ -167,17 +184,17 @@ public class AdminController {
         productRecover.setView(product.getView());
         productRecoverRepository.saveAndFlush(productRecover);
 
-        model.addAttribute("message", "product updated successfully!");
+        model.addAttribute(ConstantService.MESSAGE, "product updated successfully!");
         return "redirect:/admin/ProductList.htm";
     }
 
     @PostMapping({"/admin-validate"})
-    public String adminValidate(@ModelAttribute("command") Customer customer, Model model, HttpSession session,RedirectAttributes redirectAttributes){
+    public String adminValidate(@ModelAttribute("command") CustomerDTO customer, Model model, HttpSession session, RedirectAttributes redirectAttributes){
         if(customer.getEmail().equalsIgnoreCase("admin@gmail.com") && customer.getPassword().equalsIgnoreCase("123")){
             addUserInSession(session,customer.getEmail(),ConstantService.ADMIN_ROLE);
             return "redirect:adminHome.htm";
         }else{
-        	redirectAttributes.addFlashAttribute("message", "Wrong Email and password,Please try new one");
+        	redirectAttributes.addFlashAttribute(ConstantService.MESSAGE, "Wrong Email and password,Please try new one");
             return "redirect:/customer/adminPanel.htm";
         }
     }
@@ -191,7 +208,7 @@ public class AdminController {
         }
     }
 
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session,Model model){
         session.invalidate();
         model.addAttribute("userClickHome",true);
